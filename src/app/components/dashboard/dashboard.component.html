@@ -1,0 +1,52 @@
+<mat-toolbar color="primary">
+    <span>AI Trading Agent — Dashboard</span>
+    <span style="flex:1 1 auto"></span>
+    <mat-icon aria-hidden="false">monitor_heart</mat-icon>
+  </mat-toolbar>
+  
+  <div class="page">
+    <mat-card class="control-card">
+      <div class="row">
+        <mat-form-field appearance="outline" class="grow">
+          <mat-label>Ticker</mat-label>
+          <input matInput [(ngModel)]="ticker" placeholder="e.g. AAPL or TCS.NS">
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline" style="width:120px">
+          <mat-label>Timeframe</mat-label>
+          <input matInput [(ngModel)]="timeframe" placeholder="1d / 5m / 1m">
+        </mat-form-field>
+  
+        <button mat-flat-button color="accent" (click)="analyzeTicker()">Analyze</button>
+  
+        <mat-button-toggle-group #toggleGroup="matButtonToggleGroup" style="margin-left:16px">
+          <mat-button-toggle (click)="useMockBackend = true" [checked]="useMockBackend">Mock</mat-button-toggle>
+          <mat-button-toggle (click)="useMockBackend = false">Real</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </mat-card>
+  
+    <mat-card class="events-card">
+      <h3>Recent Events</h3>
+      <mat-list>
+        <mat-list-item *ngFor="let e of events">
+          <div class="event">
+            <div class="top">
+              <div class="left">
+                <b>{{ e.ticker }}</b>
+                <div class="meta">{{ e.verdict?.verdict }} • {{ e.verdict?.confidence }}</div>
+              </div>
+              <div class="time">{{ e.ts | date:'short' }}</div>
+            </div>
+  
+            <div class="evidence">{{ e.evidence }}</div>
+            <div class="reasons" *ngIf="e.verdict?.reasons">
+              <small *ngFor="let r of e.verdict.reasons">• {{ r }}</small>
+            </div>
+          </div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+      </mat-list>
+    </mat-card>
+  </div>
+  
